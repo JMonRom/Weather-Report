@@ -1,0 +1,9 @@
+.city-Display {
+  color: black;
+  border: 1px solid black;
+  padding: 15%;
+  width: 55rem;
+  margin: 0;
+  border-radius: 2px;
+  background-color: white;
+}
