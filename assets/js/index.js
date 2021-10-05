@@ -88,15 +88,15 @@ let fiveDayForecast = (event) => {
       let forecastHTML = ` <h2> 5-Day Forecast: </h2> <div class="flex-wrap d-inline-flex" id="five-day-display">`;
   for (let i = 0; i < response.list.length; i++){ 
       //use of UTC and Open Weather Map to display a 5 day forecast
-      let timeZoneOffset = response.city;
-      let timeZoneHours = timeZoneOffset;
+      let timeZoneOffset = response.city.timezone;
+      let timeZoneHours = timeZoneOffset / 60 / 60;
       let dayForecast = response.list[i];
       let dayUTC = dayForecast.dt;
       let currentMoment = moment.unix(dayUTC).utc().utcOffset(timeZoneHours);
 
       let icon = "https://openweathermap.org/img/w/" + dayForecast.weather[0].icon + ".png";
 
-      if(currentMoment.format("HH:mm:ss") <= "23:00:00") {
+      if(currentMoment.format("HH:mm:ss") === "11:00:00" || currentMoment.format("HH:mm:ss") === "12:00:00" ) {
         forecastHTML += `<div class="card weather-boxes m-3> <ul class="list-unstyled" <li>${currentMoment.format("MM/DD/YY")}</li> <li class="weather-icon"><img src="${icon}"></li> <li>Temp: ${dayForecast.main.temp};</li> <li> Wind: ${dayForecast.wind.speed}</li> <li> Humidity: ${dayForecast.main.humidity}</li> </ul> </div>`;
       }
     }
