@@ -3,6 +3,7 @@ let weatherAPIKey = '27cf6ea7d803e00225bc37d5ded1aa6a';
 let currentCity;
 let priorCity;
 
+// displays city weather values for the day
 let weatherCondition = (event) => {
   let city = $('#city-Search').val();
   currentCity = $('#city-Search').val();
@@ -23,17 +24,40 @@ let weatherCondition = (event) => {
     let momentTimeUTC = response.dt;
     let momentTZOffset = response.timezone;
     let momentTZOHours = momentTZOffset / 60 / 60;
-    let momentNow = moment.unix(momentTimeUTC).utc().utcOffset(momentTZOHours);
+    let dateToday = moment.unix(momentTimeUTC).utc().utcOffset(momentTZOHours);
     listCities();
     fiveDayForecast(event);
 
     $('#city-Name').text(response.name);
 
-    let weatherHTML = `<h3> ${response.name} ${momentNow.format("(MM/DD/YY)")}<img src="${icon}"></h3> <ul class="list-unstyled"> <li>Temp: ${response.main.temp}</li> <li>Wind: ${response.wind.speed}</li> <li> Humidity: ${response.main.humidity} </li> <li> UV Index: </li> </ul>`;
+    let weatherHTML = `<h3> ${response.name} ${dateToday.format("(MM/DD/YY)")}<img src="${icon}"></h3> <ul class="list-unstyled"> <li>Temp: ${response.main.temp}</li> <li>Wind: ${response.wind.speed}</li> <li> Humidity: ${response.main.humidity} </li> <li> UV Index: </li> </ul>`;
 
     $('#city-Display').html(weatherHTML);
+
+    // works the UV section of weather report
+    let longitude = response.coord.lon;
+    let latitude = response.coord.lat;
+    let uvStatusLink = "api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&APPID" + weatherAPIKey;
+
+    // gets UV index and displays with color depending on status/quality
+    fetch(uvStatusLink)
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        let uvStatus = response.value;
+        $('#uvStatus').html(`UV Index: <span id='uvColor'> ${uvStatus}</span>`);
+        if (uvStatus >= 0 && uvStatus < 3){
+          $('uvColor').attr('class', 'uv-Good');
+        } else if (uvStatus >= 3 && uvStatus < 8) {
+          $('uvColor').attr('class', 'uv-Moderate');
+        } else if (uvStatus >= 8) {
+          $('uvColor').attr('class', 'uv-Bad');
+        }
+      });
   })
 }
+
 
 // Save the city to local storage
 let storeCity = (searchedCity) => {
@@ -50,7 +74,7 @@ let storeCity = (searchedCity) => {
   }
 }
 
-let fiveDayForecast = () => {
+let fiveDayForecast = (event) => {
   let city = $('#city-Search').val();
   
   let queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + weatherAPIKey;
@@ -62,7 +86,7 @@ let fiveDayForecast = () => {
     .then((response) => {
       //HTML formatting
       let forecastHTML = ` <h2> 5-Day Forecast: </h2> <div class="flex-wrap d-inline-flex" id="five-day-display">`;
-
+  for (let i = 0; i < response.list.length; i++){ 
       //use of UTC and Open Weather Map to display a 5 day forecast
       let timeZoneOffset = response.city;
       let timeZoneHours = timeZoneOffset;
@@ -75,7 +99,7 @@ let fiveDayForecast = () => {
       if(currentMoment.format("HH:mm:ss") <= "23:00:00") {
         forecastHTML += `<div class="card weather-boxes m-3> <ul class="list-unstyled" <li>${currentMoment.format("MM/DD/YY")}</li> <li class="weather-icon"><img src="${icon}"></li> <li>Temp: ${dayForecast.main.temp};</li> <li> Wind: ${dayForecast.wind.speed}</li> <li> Humidity: ${dayForecast.main.humidity}</li> </ul> </div>`;
       }
-
+    }
       forecastHTML += `</div>`;
       $('#five-Days').html(forecastHTML);
     })
