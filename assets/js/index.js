@@ -17,6 +17,7 @@ let weatherCondition = (event) => {
   .then((response) => {
     console.log(response)
     storeCity(city)
+    // $('#invalid-Search').text('')
 
     let iconImg = response.weather[0].icon;
     let icon = "https://openweathermap.org/img/w/" + iconImg + ".png";
@@ -107,8 +108,7 @@ let fiveDayForecast = (event) => {
 
 let listCities = () => {
   $('#city-Return').empty();
-  
-  // checks local storage and attributes a city value
+
   if (localStorage.length === 0) {
     if (priorCity) {
       $('#city-Search').attr('value', priorCity);
@@ -123,7 +123,7 @@ let listCities = () => {
 
     // display cities searched on the page
     for (let i = 0; i < localStorage.length; i++) {
-      let city = localStorage.getItem('cities' + i)
+      let city = localStorage.getItem('cities' + i);
       let cityEl;
 
       if (currentCity === '') {
@@ -155,7 +155,7 @@ $('#search-Btn').on('click', (event) => {
 
 $('#city-Return').on('click', (event) => {
   event.preventDefault(); 
-  $('#city-Search').val(event.target.textContent)
+  $('#city-Search').val(event.target.textContent);
   currentCity = $('#city-Search').val();
   weatherCondition(event);
 })
