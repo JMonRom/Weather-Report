@@ -3,6 +3,13 @@ let weatherAPIKey = '27cf6ea7d803e00225bc37d5ded1aa6a';
 let currentCity;
 let priorCity;
 
+let handleErrors = (response) => {
+  if(!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
 // displays city weather values for the day
 let weatherCondition = (event) => {
   let city = $('#city-Search').val();
@@ -11,11 +18,11 @@ let weatherCondition = (event) => {
   let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + weatherAPIKey;
 
   fetch(queryURL)
+  .then(handleErrors)
   .then((response) => {
     return response.json();
   })
   .then((response) => {
-    console.log(response)
     storeCity(city)
     // $('#invalid-Search').text('')
 
@@ -31,17 +38,18 @@ let weatherCondition = (event) => {
 
     $('#city-Name').text(response.name);
 
-    let weatherHTML = `<h3> ${response.name} ${dateToday.format("(MM/DD/YY)")}<img src="${icon}"></h3> <ul class="list-unstyled"> <li>Temp: ${response.main.temp}</li> <li>Wind: ${response.wind.speed}</li> <li> Humidity: ${response.main.humidity} </li> <li> UV Index: </li> </ul>`;
+    let weatherHTML = `<h3> ${response.name} ${dateToday.format("(MM/DD/YY)")}<img src="${icon}"></h3> <ul class="list-unstyled"> <li>Temp: ${response.main.temp} &#8457</li> <li>Wind: ${response.wind.speed} mph</li> <li> Humidity: ${response.main.humidity} %</li> <li id="uvStatus"> UV Index: </li> </ul>`;
 
     $('#city-Display').html(weatherHTML);
 
     // works the UV section of weather report
     let longitude = response.coord.lon;
     let latitude = response.coord.lat;
-    let uvStatusLink = "api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&APPID" + weatherAPIKey;
+    let uvLink = "api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&APPID" + weatherAPIKey;
 
     // gets UV index and displays with color depending on status/quality
-    fetch(uvStatusLink)
+    fetch(uvLink)
+      .then(handleErrors)
       .then((response) => {
         return response.json();
       })
@@ -78,7 +86,7 @@ let storeCity = (searchedCity) => {
 let fiveDayForecast = (event) => {
   let city = $('#city-Search').val();
   
-  let queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + weatherAPIKey;
+  let queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + weatherAPIKey;
 
   fetch(queryURL)
     .then((response) => {
@@ -98,7 +106,7 @@ let fiveDayForecast = (event) => {
       let icon = "https://openweathermap.org/img/w/" + dayForecast.weather[0].icon + ".png";
 
       if(currentMoment.format("HH:mm:ss") === "11:00:00" || currentMoment.format("HH:mm:ss") === "12:00:00" ) {
-        forecastHTML += `<div class="card weather-boxes m-3> <ul class="list-unstyled" <li>${currentMoment.format("MM/DD/YY")}</li> <li class="weather-icon"><img src="${icon}"></li> <li>Temp: ${dayForecast.main.temp};</li> <li> Wind: ${dayForecast.wind.speed}</li> <li> Humidity: ${dayForecast.main.humidity}</li> </ul> </div>`;
+        forecastHTML += `<div class="card weather-boxes m-3> <ul class="list-unstyled" <li>${currentMoment.format("MM/DD/YY")}</li> <li class="weather-icon"><img src="${icon}"></li> <li>Temp: ${dayForecast.main.temp} &#8457</li> <li> Wind: ${dayForecast.wind.speed} mph</li> <li> Humidity: ${dayForecast.main.humidity} %</li> </ul> </div>`;
       }
     }
       forecastHTML += `</div>`;
