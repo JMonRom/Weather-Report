@@ -14,6 +14,8 @@ Then I started working on getting the API key to work. I went over previous clas
 
 Once the user searched for a city I was able to render all the searched cities, but realized that I needed to add an option to clear the results because the searched list was capped at 10 items.
 
+https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+
 
 ### Navigate my page
 

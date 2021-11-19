@@ -1,5 +1,6 @@
 :root {
   --primaryColor: rgb(75, 148, 170);
+  --primaryShadow: rgb(1, 66, 66);
 }
 
 #header {
@@ -12,7 +13,7 @@ h1 {
   font-size: 300%;
   text-align: center;
   font-weight: bold;
-  text-shadow: 0px 4px 4px rgb(1, 66, 66);
+  text-shadow: 0px 4px 4px var(--primaryShadow);
 }
 
 .city-Display {
@@ -29,10 +30,9 @@ h1 {
  text-align: center;
  background-color: var(--primaryColor);
  list-style-type: none;
- color: white;
+ color: black;
  width: 9rem;
  margin: 4px;
-
 }
 
 #search-Btn {
@@ -40,21 +40,21 @@ h1 {
   border-radius: 08px;
   color: white;
   font-weight: bold;
-  text-shadow: 0px 4px 4px rgb(1, 66, 66);
+  text-shadow: 0px 4px 4px var(--primaryShadow);
   margin-top: 8px;
 }
 
 .uv-Good {
   background-color: green;
-  color: white;
+  color: black;
 }
 
 .uv-Moderate {
   background-color: brown;
-  color: white;
+  color: black;
 }
 
 .uv-Bad {
   background-color: red;
-  color: white;
+  color: black;
 }
