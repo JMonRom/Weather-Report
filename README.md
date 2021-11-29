@@ -14,6 +14,8 @@ Then I started working on getting the API key to work. I went over previous clas
 
 Once the user searched for a city I was able to render all the searched cities, but realized that I needed to add an option to clear the results because the searched list was capped at 10 items.
 
+After a while of working on this homework some code would break and when I returned to it I also noticed that I was missing a script so the five day forecast was finally able to be displayed, but am having difficulties with the UV index and listed searches.
+
 https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
 
 

@@ -100,11 +100,11 @@ let fiveDayForecast = (event) => {
         forecastHTML += `
         <div class="card weather-boxes p0 m-2> 
         <ul class="list-unstyled p-3 " 
-          <li class="m-3">${thisMoment.format("MM/DD/YY")}</li> 
-          <li class="mx-3"> <img src="${icon}"> </li> 
-          <li class="mx-3">Temp: ${dayForecast.main.temp} &#8457; </li> 
-          <li class="mx-3"> Wind: ${dayForecast.wind.speed} mph </li>
-          <li class="mx-3"> Humidity: ${dayForecast.main.humidity} %</li> 
+          <li>${thisMoment.format("MM/DD/YY")}</li> 
+          <li> <img src="${icon}"> </li> 
+          <li>Temp: ${dayForecast.main.temp} &#8457; </li> 
+          <li> Wind: ${dayForecast.wind.speed} mph </li>
+          <li> Humidity: ${dayForecast.main.humidity} %</li> 
         </ul> 
         </div>`;
       }
