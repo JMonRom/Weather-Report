@@ -1,12 +1,12 @@
 # Weather-Report
 
-The goal for this assignment was to produce a web page where a user can search for a city and recieve a five day forecast; city name displaying the date, temperature, humidity, wind speed, and UV Index; and a list of previously searched cities. 
-
-![PNG of Weather Forecast]()
+<h1 align="center"># Weather Report</h1>
+  
+![badge](https://img.shields.io/badge/license-MIT-red) <br />
 
 --------------------------------------
 
-## The Process 
+## Description 
 
 I started of with a simple HTML set up that would display the needed text and boxes for the functions using bootstrap. After most of JS was done I went back and structured the site so it is easier to navigate. 
 
@@ -16,11 +16,40 @@ Once the user searched for a city I was able to render all the searched cities, 
 
 After a while of working on this homework some code would break and when I returned to it I also noticed that I was missing a script so the five day forecast was finally able to be displayed, but am having difficulties with the UV index and listed searches.
 
-https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+[Fetch and Errors](https://www.tjvantoll.com/2015/09/13/fetch-and-errors/)
 
-
-### Navigate my page
+[Moment JS](https://www.tabnine.com/code/javascript/functions/Moment)
 
 Here is a link to my deployed page that will display a weather forecasting site that provides ////
 
-[Weather Forecast Link]()
+[Weather Dashboard](https://jmonrom.github.io/Weather-Report/)
+
+## Table of Contents
+  * [License](#license)
+  * [Contributing](#contributing)
+  * [Tests](#tests)
+  * [Questions](#questions)
+
+ ## License
+
+  ![badge](https://img.shields.io/badge/license-MIT-red) 
+
+  <br />
+
+  This application is covered under the MIT license.
+
+  ## Contributing
+
+  Jonathan Montes Romero
+
+  ## Tests
+
+  NA. Navigate to the website using the link below:
+
+  [Weather Dashboard](https://jmonrom.github.io/Weather-Report/)
+
+  ## Questions
+
+  https://github.com/JMonRom
+
+  jmontes8686@gmail.com
