@@ -15,9 +15,9 @@ let weatherCondition = (event) => {
   let city = $('#city-Search').val();
   currentCity = $('#city-Search').val();
   // variable set to use fetch to return weather search data from API
-  let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + weatherAPIKey
+  let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&APPID=" + weatherAPIKey;
   fetch(queryURL)
-  // .then(handleErrors)
+  .then(handleErrors)
   .then((response) => {
     return response.json();
   })
@@ -54,7 +54,7 @@ let weatherCondition = (event) => {
     let uvLink = "api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&APPID=" + weatherAPIKey;
     // gets UV index and displays with color depending on status/quality
     fetch(uvLink)
-      // .then(handleErrors)
+      .then(handleErrors)
       .then((response) => {
         console.log(response);
         return response.json();
@@ -73,6 +73,46 @@ let weatherCondition = (event) => {
   })
 }
 
+let fiveDayForecast = (event) => {
+  let city = $('#city-Search').val();
+  // API set up for forecast search
+  let queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&APPID=" + weatherAPIKey;
+  // fetch request from API
+  fetch(queryURL)
+    .then(handleErrors)
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      //HTML formatting
+      let forecastHTML = `<h2> 5-Day Forecast:</h2> <div class="flex-wrap d-inline-flex" id="fiveDaysDisplay">`;
+  for (let i = 0; i < response.list.length; i++){ 
+      //use of UTC and Open Weather Map to display a 5 day forecast
+      let dayForecast = response.list[i];
+      let timeZoneOffset = response.city.timezone;
+      let timeZoneHours = timeZoneOffset / 60 / 60;
+      let dayUTC = dayForecast.dt;
+      let thisMoment = moment.unix(dayUTC).utc().utcOffset(timeZoneHours);
+
+      let icon = "https://openweathermap.org/img/w/" + dayForecast.weather[0].icon + ".png";
+
+      if(thisMoment.format("HH:mm:ss") === "11:00:00" || thisMoment.format("HH:mm:ss") === "12:00:00" || thisMoment.format("HH:mm:ss") === "13:00:00") {
+        forecastHTML += `
+        <div class="card weather-boxes p0 m-2> 
+        <ul class="list-unstyled p-3 " 
+          <li class="m-3">${thisMoment.format("MM/DD/YY")}</li> 
+          <li class="mx-3"> <img src="${icon}"> </li> 
+          <li class="mx-3">Temp: ${dayForecast.main.temp} &#8457; </li> 
+          <li class="mx-3"> Wind: ${dayForecast.wind.speed} mph </li>
+          <li class="mx-3"> Humidity: ${dayForecast.main.humidity} %</li> 
+        </ul> 
+        </div>`;
+      }
+    }
+      forecastHTML += `</div>`;
+      $('#five-day-display').html(forecastHTML);
+    })
+}
 
 // Save the city to local storage
 let storeCity = (searchedCity) => {
@@ -87,47 +127,6 @@ let storeCity = (searchedCity) => {
       localStorage.setItem('cities' + localStorage.length, searchedCity)
     }
   }
-}
-
-let fiveDayForecast = (event) => {
-  let city = $('#city-Search').val();
-  // API set up for forecast search
-  let queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + weatherAPIKey;
-  // fetch request from API
-  fetch(queryURL)
-    // .then(handleErrors)
-    .then((response) => {
-      return response.json()
-    })
-    .then((response) => {
-      //HTML formatting
-      let forecastHTML = ` <h2> 5-Day Forecast: </h2> <div class="flex-wrap d-inline-flex" id="fiveDaysDisplay">`;
-  for (let i = 0; i < response.list.length; i++){ 
-      //use of UTC and Open Weather Map to display a 5 day forecast
-      let timeZoneOffset = response.city.timezone;
-      let timeZoneHours = timeZoneOffset / 60 / 60;
-      let dayForecast = response.list[i];
-      let dayUTC = dayForecast.dt;
-      let currentMoment = moment.unix(dayUTC).utc().utcOffset(timeZoneHours);
-
-      let icon = "https://openweathermap.org/img/w/" + dayForecast.weather[0].icon + ".png";
-
-      if(currentMoment.format("HH:mm:ss") === "11:00:00" || currentMoment.format("HH:mm:ss") === "12:00:00" ) {
-        forecastHTML += `
-        <div class="card weather-boxes m-2> 
-        <ul class="list-unstyled" 
-          <li>${currentMoment.format("MM/DD/YY")}</li> 
-          <li> <img src="${icon}"> </li> 
-          <li>Temp: ${dayForecast.main.temp} &#8457; </li> 
-          <li> Wind: ${dayForecast.wind.speed} mph</li> 
-          <li> Humidity: ${dayForecast.main.humidity} %</li> 
-        </ul> 
-        </div>`;
-      }
-    }
-      forecastHTML += `</div>`;
-      $('#five-day-display').html(forecastHTML);
-    })
 }
 
 let listCities = () => {
@@ -187,7 +186,7 @@ $('#city-Return').on('click', (event) => {
 $('#search-Delete').on('click', (event) => {
   localStorage.clear();
   listCities();
-})
+});
 
 listCities();
 
